@@ -5,8 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "aws_cloud_map"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{An easy to use object-oriented library for accessing and manipulating Amazon EC2 information.}
+    gem.description = %Q{An easy to use object-oriented library for accessing and manipulating Amazon EC2 information.}
     gem.email = "marcus@marcusirven.com"
     gem.homepage = "http://github.com/mirven/aws_cloud_map"
     gem.authors = ["Marcus Irven"]
