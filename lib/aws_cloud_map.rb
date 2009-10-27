@@ -56,7 +56,14 @@ module AWS
     alias_method :public?, :aws_is_public
   
     def instances
-      @@ec2.describe_instances.select { |instance| instance[:aws_image_id] == id }.map { |instance| Instance.new(instance) }
+      @instances ||= @@ec2.describe_instances.select { |instance| instance[:aws_image_id] == id }.map { |instance| Instance.new(instance) }
+    end
+    
+    # TODO add all params
+    # TODO test
+    def create_instance(security_groups, key, user_data, size, region)
+      @instances = nil
+      Instance.new(@@ec2.run_instances(id, 1, 1, security_groups, key, user_data, nil, size, nil, nil, region).first)
     end
   
     def self.all
@@ -167,6 +174,30 @@ module AWS
       @@ec2.terminate_instances [id]
     end
     
+    #TODO test
+    #TODO also add to volume
+    #TODO allow for volume case
+    def attach!(volume_or_id, device)
+      @@ec2.attach_volume(volume_or_id, id, device)
+      @volumes = nil
+    end
+
+    #TODO test
+    #TODO also add to volume
+    #TODO allow for volume case
+    def detach!(volume_or_id)
+      @@ec2.detach_volume(volume_or_id, id, device)
+      @volumes = nil
+    end
+    
+    #TODO test
+    #TODO allow for address case
+    #TODO refresh attributes
+    def associate!(address_or_ip)
+      @@ec2.associate_address(id, address_or_ip)
+      @address = nil
+    end
+        
     def self.all
       @@ec2.describe_instances.map { |instance| new(instance) }
     end
